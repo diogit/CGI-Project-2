@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="object_viewer.css">
+        <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        attribute vec3 vNormal;
+        uniform mat4 mModelView;
+        uniform mat4 mProjection;
+        uniform mat4 mNormals;
+        uniform bool paintWhite;
+        varying vec4 fColor;
+        void main(){
+            gl_Position = mProjection * mModelView * vPosition;
+            if (paintWhite){
+				fColor = vec4(1.0, 1.0, 1.0, 1.0);
+            } else {
+            	fColor = 0.7*vPosition+0.3*vec4(1.0,1.0,1.0,1.0);
+            }
+        }
+        </script>
+        <script id="fragment-shader" type="x-shader/x-fragment">
+		precision mediump float;
+		varying vec4 fColor;
+		void main() {
+			gl_FragColor = fColor;
+		}
+        </script>
+        <script id="vertex-shader-2" type="x-shader/x-vertex">
+        </script>
+        <script id="fragment-shader-2" type="x-shader/x-fragment">
+        </script>
+        <script type="text/javascript" src="Common/webgl-utils.js"></script>
+        <script type="text/javascript" src="Common/initShaders.js"></script>
+        <script type="text/javascript" src="Common/MV.js"></script>
+        <script type="text/javascript" src="Common/sphere.js"></script>
+        <script type="text/javascript" src="Common/cube.js"></script>
+        <script type="text/javascript" src="Common/pyramid.js"></script>
+        <script type="text/javascript" src="Common/torus.js"></script>
+        <script type="text/javascript" src="object_viewer.js"></script>    
+        <title>Object Viewer</title>    
+    </head>
+    <body>
+       <div id="singlepagecontainer">
+            <div id="interfacearea">
+                <header>
+                	<h1>Object Viewer</h1>
+
+                </header>
+                <section>
+	                <h2>Model</h2>
+					<select id="Model">
+					    <option value="cube">Cube</option>
+					    <option value="sphere">Sphere</option>
+					    <option value="pyramid">Pyramid</option>
+					    <option value="torus">Torus</option>
+					</select>
+				</section>
+				<section>
+	                <h2>Drawing mode</h2>
+					<select id="DrawMode">
+					    <option value="wireframe">Wireframe</option>
+					    <option value="filled">Filled</option>
+					    <option value="mixed">Mixed</option>
+					</select>
+				</section>
+				<section>
+	                <h2>Projection</h2>
+					<select id="Projection">
+					    <option value="oblique">Oblique</option>
+					    <option value="axonometric">Axonometric</option>
+					    <option value="perspective">Perspective</option>
+					</select>
+					<div id="obliqueDiv">
+						&#8467;:
+						<input id="obl_l" type="range" min="0" max="1" step="0.01" value="1"/>
+						<br>
+						&alpha;:
+						<input id="obl_a" type="range" min="-180" max="180" step="0.01" value="45"/>
+						<br>
+					</div>
+					<div id="axonometricDiv" class="hidden">
+						&gamma;:
+						<input id="axo_gamma" type="range" min="-180" max="180" step="0.01" value="19.42"/>
+						<br>
+						&theta;:
+						<input id="axo_theta" type="range" min="-180" max="180" step="0.01" value="-20.27"/>
+						<br>
+					</div>
+					<div id="perspectiveDiv" class="hidden">
+						d:
+						<input id="per_d" type="range" min="0.01" max="20" step="0.01" value="2"/>
+						<br>
+					</div>
+				</section>
+				<section>
+					<h2>Shader</h2>
+					<div>Vertex: <input type="file" id="vertex"></div>
+	                <div>Fragment: <input type="file" id="fragment"></div>
+                </section>
+                <footer>
+                	<b>Authors:</b> Daniel Flamino (45465), Diogo Silvério (45679)
+                </footer>
+            </div>
+	        <div id="viewarea">
+                <canvas id="gl-canvas">
+                    Oops... your browser doesn't support the HTML5 canvas element"
+                </canvas>      
+            </div>
+        </div>
+    </body>
+</html>
+
